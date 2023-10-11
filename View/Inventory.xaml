@@ -1,0 +1,128 @@
+﻿<Window x:Class="JackPastil.View.Inventory"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+        xmlns:local="clr-namespace:JackPastil.View"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Inventory"
+        Height="450"
+        Width="800"
+        MinHeight="414"
+        MinWidth="696"
+        Background="#00000000"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        FontFamily="Calibri">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"
+                      ResizeBorderThickness="5" />
+    </WindowChrome.WindowChrome>
+
+    <Border CornerRadius="20"
+            Background="{StaticResource color3}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="200"
+                                  Width="15*" />
+                <ColumnDefinition Width="85*" />
+            </Grid.ColumnDefinitions>
+            <Border Background="{StaticResource color1}"
+                    CornerRadius="20"
+                    Padding="0,10,0,10">
+                <Grid>
+                    <StackPanel>
+
+                        <Image Source="/View/Jd.png"
+                               Width="100" />
+                        <RadioButton Style="{StaticResource inventoryMainButton}"
+                                     Tag="{StaticResource textColor2}"
+                                     IsChecked="True">
+                            <StackPanel Orientation="Horizontal">
+                                <fa:IconImage Icon="Wallet"
+                                              Style="{StaticResource inventoryButtonIcon}" />
+                                <TextBlock Text="Sales"
+                                           Style="{StaticResource inventoryButtonText}" />
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource inventoryMainButton}"
+                                     Tag="{StaticResource textColor2}">
+                            <StackPanel Orientation="Horizontal">
+                                <fa:IconImage Icon="PieChart"
+                                              Style="{StaticResource inventoryButtonIcon}" />
+                                <TextBlock Text="Inventory"
+                                           Style="{StaticResource inventoryButtonText}" />
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource inventoryMainButton}"
+                                     Tag="{StaticResource textColor2}">
+                            <StackPanel Orientation="Horizontal">
+                                <fa:IconImage Icon="ShoppingBag"
+                                              Style="{StaticResource inventoryButtonIcon}" />
+                                <TextBlock Text="Products"
+                                           Style="{StaticResource inventoryButtonText}" />
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource inventoryMainButton}"
+                                     Tag="{StaticResource textColor2}">
+                            <StackPanel Orientation="Horizontal">
+                                <fa:IconImage Icon="UserGear"
+                                              Style="{StaticResource inventoryButtonIcon}" />
+                                <TextBlock Text="Accounts"
+                                           Style="{StaticResource inventoryButtonText}" />
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource inventoryMainButton}"
+                                     Tag="{StaticResource textColor2}">
+                            <StackPanel Orientation="Horizontal">
+                                <fa:IconImage Icon="SignOut"
+                                              Style="{StaticResource inventoryButtonIcon}" />
+                                <TextBlock Text="Log out"
+                                           Style="{StaticResource inventoryButtonText}" />
+                            </StackPanel>
+                        </RadioButton>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="30" Height="5*"/>
+                    <RowDefinition Height="90*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Stretch"
+                            FlowDirection="RightToLeft"
+                            Background="Transparent"
+                            MouseLeftButtonDown="Window_MouseLeftButtonDown">
+                    <Button x:Name="btnClose"
+                            Style="{StaticResource controlButton}"
+                            Margin="10,0,0,0"
+                            Click="BtnClose_Click">
+                        <fa:IconImage Icon="Xmark"
+                                      Style="{StaticResource controlIcon}" />
+                    </Button>
+                    <Button x:Name="btnMaximize"
+                            Style="{StaticResource controlButton}"
+                            Click="BtnMaximize_Click">
+                        <fa:IconImage Icon="Square"
+                                      Style="{StaticResource controlIcon}" />
+                    </Button>
+                    <Button x:Name="btnMinimize"
+                            Style="{StaticResource controlButton}"
+                            Click="BtnMinimize_Click">
+                        <fa:IconImage Icon="WindowMinimize"
+                                      Style="{StaticResource controlIcon}" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
