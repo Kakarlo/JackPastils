@@ -83,7 +83,13 @@
     <Compile Include="Repository\IUserRepository.cs" />
     <Compile Include="Repository\RepositoryBase.cs" />
     <Compile Include="Repository\UserRepository.cs" />
+    <Compile Include="ViewModel\InventoryChild\AccountsPanelVM.cs" />
+    <Compile Include="ViewModel\CashierVM.cs" />
+    <Compile Include="ViewModel\InventoryChild\InventoryPanelVM.cs" />
+    <Compile Include="ViewModel\InventoryVM.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
+    <Compile Include="ViewModel\InventoryChild\ProductsPanelVM.cs" />
+    <Compile Include="ViewModel\InventoryChild\SalesPanelVM.cs" />
     <Compile Include="View\Admin.xaml.cs">
       <DependentUpon>Admin.xaml</DependentUpon>
     </Compile>
@@ -92,6 +98,18 @@
     </Compile>
     <Compile Include="View\Inventory.xaml.cs">
       <DependentUpon>Inventory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InventoryChild\AccountsPanel.xaml.cs">
+      <DependentUpon>AccountsPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InventoryChild\InventoryPanel.xaml.cs">
+      <DependentUpon>InventoryPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InventoryChild\ProductsPanel.xaml.cs">
+      <DependentUpon>ProductsPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InventoryChild\SalesPanel.xaml.cs">
+      <DependentUpon>SalesPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TestLogin.xaml.cs">
       <DependentUpon>TestLogin.xaml</DependentUpon>
@@ -121,6 +139,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Inventory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\InventoryChild\AccountsPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\InventoryChild\InventoryPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\InventoryChild\ProductsPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\InventoryChild\SalesPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -159,6 +193,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ViewModel\CashierChild\" />
+    <Folder Include="View\CashierChild\" />
     <Folder Include="View\User Control\" />
   </ItemGroup>
   <ItemGroup>
@@ -184,9 +220,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="View\Jd.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

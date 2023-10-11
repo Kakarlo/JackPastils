@@ -16,7 +16,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         FontFamily="Calibri"
-        FocusManager.FocusedElement="{Binding ElementName=tbUsename}">
+        FocusManager.FocusedElement="{Binding ElementName=tbUsername}">
 
     <Window.DataContext>
         <vm:LoginVM />
@@ -121,8 +121,8 @@
                            Padding="0"
                            FontWeight="Bold"
                            FontSize="16"
-                           Foreground="{StaticResource color6}">Username</Label>
-                    <TextBox x:Name="tbUsename"
+                           Foreground="{StaticResource darkgray1}">Username</Label>
+                    <TextBox x:Name="tbUsername"
                              Width="160"
                              Height="30"
                              Style="{StaticResource loginTextbox}"
@@ -132,7 +132,7 @@
                            Padding="0"
                            FontWeight="Bold"
                            FontSize="16"
-                           Foreground="{StaticResource color6}">Password</Label>
+                           Foreground="{StaticResource darkgray1}">Password</Label>
                     <TextBox Width="160"
                              Height="30"
                              Style="{StaticResource loginTextbox}"
@@ -143,7 +143,7 @@
                                Foreground="Red"
                                Text="{Binding ErrorMessage}"></TextBlock>
                     <Button Width="160"
-                            Height="30"
+                            Height="35"
                             Margin="0,25,0,0"
                             Foreground="White"
                             Style="{StaticResource loginButton}"

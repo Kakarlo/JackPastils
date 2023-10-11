@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         xmlns:local="clr-namespace:JackPastil.View"
+        xmlns:vm="clr-namespace:JackPastil.ViewModel"
+        xmlns:v="clr-namespace:JackPastil.View.InventoryChild"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Inventory"
-        Height="450"
-        Width="800"
+        Height="675"
+        Width="1200"
         MinHeight="414"
         MinWidth="696"
         Background="#00000000"
@@ -17,30 +19,72 @@
         AllowsTransparency="True"
         FontFamily="Calibri">
 
+    <Window.DataContext>
+        <vm:InventoryVM />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:SalesPanelVM}">
+            <v:SalesPanel/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:InventoryPanelVM}">
+            <v:InventoryPanel />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:ProductsPanelVM}">
+            <v:ProductsPanel />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:AccountsPanelVM}">
+            <v:AccountsPanel />
+        </DataTemplate>
+    </Window.Resources>
+
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"
                       ResizeBorderThickness="5" />
     </WindowChrome.WindowChrome>
 
     <Border CornerRadius="20"
-            Background="{StaticResource color3}">
+            Background="{StaticResource lightblue3}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MinWidth="200"
                                   Width="15*" />
                 <ColumnDefinition Width="85*" />
             </Grid.ColumnDefinitions>
-            <Border Background="{StaticResource color1}"
+            <Border Background="{StaticResource blue1}"
                     CornerRadius="20"
                     Padding="0,10,0,10">
                 <Grid>
-                    <StackPanel>
-
-                        <Image Source="/View/Jd.png"
-                               Width="100" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25*"
+                                       MinHeight="150" />
+                        <RowDefinition Height="70*" />
+                        <RowDefinition Height="5*" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*"
+                                           MinHeight="30" />
+                            <RowDefinition Height="80*" />
+                            <RowDefinition Height="10*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock FontSize="30"
+                                   FontWeight="Bold"
+                                   Foreground="White"
+                                   Text="Jack's Pastil"
+                                   HorizontalAlignment="Center" />
+                        <Image Grid.Row="1"
+                               Source="/Icons/Jd.png" />
+                    </Grid>
+                    <StackPanel Grid.Row="1">
                         <RadioButton Style="{StaticResource inventoryMainButton}"
                                      Tag="{StaticResource textColor2}"
-                                     IsChecked="True">
+                                     IsChecked="True"
+                                     Command="{Binding ShowSalesPanel}">
                             <StackPanel Orientation="Horizontal">
                                 <fa:IconImage Icon="Wallet"
                                               Style="{StaticResource inventoryButtonIcon}" />
@@ -50,7 +94,8 @@
                         </RadioButton>
 
                         <RadioButton Style="{StaticResource inventoryMainButton}"
-                                     Tag="{StaticResource textColor2}">
+                                     Tag="{StaticResource textColor2}"
+                                     Command="{Binding ShowInventoryPanel}">
                             <StackPanel Orientation="Horizontal">
                                 <fa:IconImage Icon="PieChart"
                                               Style="{StaticResource inventoryButtonIcon}" />
@@ -60,7 +105,8 @@
                         </RadioButton>
 
                         <RadioButton Style="{StaticResource inventoryMainButton}"
-                                     Tag="{StaticResource textColor2}">
+                                     Tag="{StaticResource textColor2}"
+                                     Command="{Binding ShowProductsPanel}">
                             <StackPanel Orientation="Horizontal">
                                 <fa:IconImage Icon="ShoppingBag"
                                               Style="{StaticResource inventoryButtonIcon}" />
@@ -70,7 +116,8 @@
                         </RadioButton>
 
                         <RadioButton Style="{StaticResource inventoryMainButton}"
-                                     Tag="{StaticResource textColor2}">
+                                     Tag="{StaticResource textColor2}"
+                                     Command="{Binding ShowAccountsPanel}">
                             <StackPanel Orientation="Horizontal">
                                 <fa:IconImage Icon="UserGear"
                                               Style="{StaticResource inventoryButtonIcon}" />
@@ -80,7 +127,8 @@
                         </RadioButton>
 
                         <RadioButton Style="{StaticResource inventoryMainButton}"
-                                     Tag="{StaticResource textColor2}">
+                                     Tag="{StaticResource textColor2}"
+                                     Click="BtnClose_Click">
                             <StackPanel Orientation="Horizontal">
                                 <fa:IconImage Icon="SignOut"
                                               Style="{StaticResource inventoryButtonIcon}" />
@@ -93,7 +141,10 @@
             </Border>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition MinHeight="30" Height="5*"/>
+                    <RowDefinition MinHeight="30"
+                                   Height="5*" />
+                    <RowDefinition MinHeight="30"
+                                   Height="5*" />
                     <RowDefinition Height="90*" />
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Column="1"
@@ -122,6 +173,24 @@
                                       Style="{StaticResource controlIcon}" />
                     </Button>
                 </StackPanel>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <fa:IconImage Icon="{Binding Icon}"
+                                      Style="{StaticResource inventoryButtonIcon}" />
+                        <TextBlock Text="{Binding Caption}"
+                                   Style="{StaticResource inventoryButtonText}" />
+                    </StackPanel>
+                </Grid>
+                <ContentControl Content="{Binding CurrentChildView}"
+                                Grid.Row="2"
+                                Margin="25">
+
+                </ContentControl>
             </Grid>
         </Grid>
     </Border>

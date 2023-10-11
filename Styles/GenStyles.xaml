@@ -26,14 +26,17 @@
     <SolidColorBrush x:Key="textColor2">#1B2B54</SolidColorBrush>
 
 
-    <!--Colors Wala pa to na ayos-->
-    <SolidColorBrush x:Key="color1">#5AADFF</SolidColorBrush>
-    <SolidColorBrush x:Key="color2">#B6CEF1</SolidColorBrush>
-    <SolidColorBrush x:Key="color3">#DDEEFF</SolidColorBrush>
-    <SolidColorBrush x:Key="color4">#16CEF1</SolidColorBrush>
-    <SolidColorBrush x:Key="color5">#1B2B54</SolidColorBrush>
-    <SolidColorBrush x:Key="color6">#545454</SolidColorBrush>
+    <!--Colors-->
+    <SolidColorBrush x:Key="blue1">#5AADFF</SolidColorBrush>
+    <SolidColorBrush x:Key="blue2">#16CEF1</SolidColorBrush>
+    <SolidColorBrush x:Key="darkblue1">#1B2B54</SolidColorBrush>
+    <SolidColorBrush x:Key="darkblue2">#5271FF</SolidColorBrush>
+    <SolidColorBrush x:Key="lightblue1">#BEE6FD</SolidColorBrush>
+    <SolidColorBrush x:Key="lightblue2">#B6CEF1</SolidColorBrush>
+    <SolidColorBrush x:Key="lightblue3">#DDEEFF</SolidColorBrush>
+    <SolidColorBrush x:Key="darkgray1">#545454</SolidColorBrush>
 
+    <SolidColorBrush x:Key="lightblueTrans1">#99DDEEFF</SolidColorBrush>
 
     <!--Button Styles-->
     <Style TargetType="Button"
@@ -89,7 +92,7 @@
            x:Key="inventoryMainButton">
         <!--Menu Button for Inventory Page-->
         <Setter Property="Height"
-                Value="50" />
+                Value="40" />
         <Setter Property="Margin"
                 Value="-3,0,0,5" />
         <Setter Property="Background"
@@ -98,6 +101,8 @@
                 Value="{StaticResource textColor1}" />
         <Setter Property="BorderBrush"
                 Value="Transparent" />
+        <Setter Property="Cursor"
+                Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
@@ -141,7 +146,7 @@
         <Setter Property="Height"
                 Value="25" />
         <Setter Property="Width"
-                Value="25" />
+                Value="40" />
         <Setter Property="Background"
                 Value="Transparent" />
         <Setter Property="Foreground"
@@ -160,7 +165,7 @@
             <Trigger Property="IsMouseOver"
                      Value="True">
                 <Setter Property="Background"
-                        Value="{StaticResource textColor1}" />
+                        Value="{StaticResource lightblueTrans1}" />
             </Trigger>
         </Style.Triggers>
 
@@ -169,6 +174,7 @@
     <!--TextBox Styles-->
     <Style TargetType="TextBox"
            x:Key="loginTextbox">
+        <!--Login TextBox-->
         <Setter Property="HorizontalContentAlignment"
                 Value="Left" />
         <Setter Property="VerticalContentAlignment"
@@ -205,7 +211,7 @@
                         <Trigger Property="IsKeyboardFocused"
                                  Value="False">
                             <Setter Property="Foreground"
-                                    Value="#545454" />
+                                    Value="{StaticResource darkgray1}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -217,6 +223,7 @@
     <!--Icon Styles-->
     <Style TargetType="fa:IconImage"
            x:Key="inventoryButtonIcon">
+        <!--Inventory Icon-->
         <Setter Property="Foreground"
                 Value="{Binding Path=Tag, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
         <Setter Property="Width"
@@ -229,23 +236,25 @@
 
     <Style TargetType="fa:IconImage"
            x:Key="controlIcon">
+        <!--Control Bar Icon-->
         <Setter Property="Foreground"
                 Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
         <Setter Property="Width"
-                Value="9" />
+                Value="10" />
         <Setter Property="Height"
-                Value="9" />
+                Value="10" />
     </Style>
 
     <!--TextBlock Styles-->
     <Style TargetType="TextBlock"
            x:Key="inventoryButtonText">
+        <!--Inventory Menu Text-->
         <Setter Property="Foreground"
                 Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
         <Setter Property="VerticalAlignment"
                 Value="Center" />
         <Setter Property="FontSize"
-                Value="22" />
+                Value="20" />
         <Setter Property="FontWeight"
                 Value="Bold" />
     </Style>

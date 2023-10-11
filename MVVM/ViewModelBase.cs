@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using JackPastil.View.InventoryChild;
+using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace JackPastil.MVVM {
@@ -8,6 +10,10 @@ namespace JackPastil.MVVM {
         // Can be called without sending a parameter
         public void OnPropertyChanged([CallerMemberName] string propertyName = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public static implicit operator ViewModelBase(SalesPanel v) {
+            throw new NotImplementedException();
         }
     }
 }
