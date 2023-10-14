@@ -11,9 +11,5 @@ namespace JackPastil.MVVM {
         public void OnPropertyChanged([CallerMemberName] string propertyName = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        public static implicit operator ViewModelBase(SalesPanel v) {
-            throw new NotImplementedException();
-        }
     }
 }

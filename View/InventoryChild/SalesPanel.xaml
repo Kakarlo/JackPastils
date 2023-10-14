@@ -10,6 +10,12 @@
              d:DesignHeight="590"
              d:DesignWidth="950">
     <Grid Background="BurlyWood">
-            
+        <DataGrid Style="{DynamicResource DataGridStyle1}"
+                  CellStyle="{DynamicResource DataGridCellStyle1}"
+                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
+                  RowStyle="{DynamicResource DataGridRowStyle1}">
+
+        </DataGrid>
+
     </Grid>
 </UserControl>

@@ -181,9 +181,14 @@
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Center">
                         <fa:IconImage Icon="{Binding Icon}"
-                                      Style="{StaticResource inventoryButtonIcon}" />
+                                      Foreground="{StaticResource darkblue1}" 
+                                      Width="24"
+                                      Height="24"
+                                      Margin="25,0,20,0"/>
                         <TextBlock Text="{Binding Caption}"
-                                   Style="{StaticResource inventoryButtonText}" />
+                                   Foreground="{StaticResource darkblue1}"
+                                   FontSize="24"
+                                   FontWeight="Bold"/>
                     </StackPanel>
                 </Grid>
                 <ContentControl Content="{Binding CurrentChildView}"

@@ -3,11 +3,674 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         xmlns:local="clr-namespace:JackPastil.View"
+        xmlns:vm="clr-namespace:JackPastil.ViewModel"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Cashier" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Cashier"
+        Height="675"
+        Width="1200"
+        MinHeight="666"
+        MinWidth="1114"
+        Background="#00000000"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        FontFamily="Calibri">
+
+    <Window.DataContext>
+        <vm:CashierVM />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </Window.Resources>
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"
+                      ResizeBorderThickness="5" />
+    </WindowChrome.WindowChrome>
+
+    <Border CornerRadius="20"
+            Background="{StaticResource lightblue3}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="300"
+                                  Width="25*" />
+                <ColumnDefinition Width="75*" />
+            </Grid.ColumnDefinitions>
+            <Border Background="{StaticResource darkgray1}"
+                    CornerRadius="20,0,0,20"
+                    Padding="0,10,0,10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="200" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="NoteSticky" />
+                        <TextBlock Text="Transaction Number: "
+                                   VerticalAlignment="Center"
+                                   FontSize="20" />
+                    </StackPanel>
+                    <DataGrid Grid.Row="1"
+                              Background="Aquamarine"
+                              FontSize="16"
+                              x:Name="productList"
+                              IsReadOnly="true"
+                              AutoGenerateColumns="false"
+                              ItemsSource="{Binding Products, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedIndex="{Binding SelectedItem}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name"  
+                                                MinWidth="60"
+                                                Width="70*"
+                                                Binding="{Binding ProductName}"/>
+                            <DataGridTextColumn Header="Qnt"
+                                                Width="70"
+                                                Binding="{Binding ProductQuantity}" />
+                            <DataGridTextColumn Header="Price"
+                                                MinWidth="90"
+                                                Width="30*"
+                                                Binding="{Binding ProductTotal}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button Grid.Row="2"
+                            Content="TEST" />
+                </Grid>
+            </Border>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="30"
+                                   Height="5*" />
+                    <RowDefinition Height="80*" />
+                    <RowDefinition MinHeight="40"
+                                   Height="5*" />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Stretch"
+                            FlowDirection="RightToLeft"
+                            Background="Transparent"
+                            MouseLeftButtonDown="Window_MouseLeftButtonDown">
+                    <Button x:Name="btnClose"
+                            Style="{StaticResource controlButton}"
+                            Margin="10,0,0,0"
+                            Click="BtnClose_Click">
+                        <fa:IconImage Icon="Xmark"
+                                      Style="{StaticResource controlIcon}" />
+                    </Button>
+                    <Button x:Name="btnMaximize"
+                            Style="{StaticResource controlButton}"
+                            Click="BtnMaximize_Click">
+                        <fa:IconImage Icon="Square"
+                                      Style="{StaticResource controlIcon}" />
+                    </Button>
+                    <Button x:Name="btnMinimize"
+                            Style="{StaticResource controlButton}"
+                            Click="BtnMinimize_Click">
+                        <fa:IconImage Icon="WindowMinimize"
+                                      Style="{StaticResource controlIcon}" />
+                    </Button>
+                </StackPanel>
+                <Grid Grid.Row="1"
+                      MinHeight="516"
+                      MinWidth="774"
+                      Margin="20,20,20,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row ="0"
+                            Grid.Column="0"
+                            CornerRadius="15"
+                            Margin="5"
+                            Background="{Binding B1, Mode=OneWay}"
+                            Visibility="{Binding V1, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T1}"
+                                       Visibility="{Binding V1, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P1}"
+                                       Visibility="{Binding V1, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T1}"
+                                    Visibility="{Binding V1, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="5"
+                            Background="{Binding B2, Mode=OneWay}"
+                            Visibility="{Binding V2, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T2}"
+                                       Visibility="{Binding V2, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P2}"
+                                       Visibility="{Binding V2, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T2}"
+                                    Visibility="{Binding V2, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Margin="5"
+                            Background="{Binding B3, Mode=OneWay}"
+                            Visibility="{Binding V3, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T3}"
+                                       Visibility="{Binding V3, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P3}"
+                                       Visibility="{Binding V3, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T3}"
+                                    Visibility="{Binding V3, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="0"
+                            Grid.Column="3"
+                            Margin="5"
+                            Background="{Binding B4, Mode=OneWay}"
+                            Visibility="{Binding V4, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T4}"
+                                       Visibility="{Binding V4, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P4}"
+                                       Visibility="{Binding V4, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T4}"
+                                    Visibility="{Binding V4, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="0"
+                            Grid.Column="4"
+                            Margin="5"
+                            Background="{Binding B5, Mode=OneWay}"
+                            Visibility="{Binding V5, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T5}"
+                                       Visibility="{Binding V5, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P5}"
+                                       Visibility="{Binding V5, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T5}"
+                                    Visibility="{Binding V5, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="0"
+                            Grid.Column="5"
+                            Margin="5"
+                            Background="{Binding B6, Mode=OneWay}"
+                            Visibility="{Binding V6, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T6}"
+                                       Visibility="{Binding V6, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P6}"
+                                       Visibility="{Binding V6, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V6, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="5"
+                            Background="{Binding B7, Mode=OneWay}"
+                            Visibility="{Binding V7, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T7}"
+                                       Visibility="{Binding V7, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P7}"
+                                       Visibility="{Binding V7, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V7, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="5"
+                            Background="{Binding B8, Mode=OneWay}"
+                            Visibility="{Binding V8, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T8}"
+                                       Visibility="{Binding V8, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P8}"
+                                       Visibility="{Binding V8, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V8, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Margin="5"
+                            Background="{Binding B9, Mode=OneWay}"
+                            Visibility="{Binding V9, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T9}"
+                                       Visibility="{Binding V9, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P9}"
+                                       Visibility="{Binding V9, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V9, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            Margin="5"
+                            Background="{Binding B10, Mode=OneWay}"
+                            Visibility="{Binding V10, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T10}"
+                                       Visibility="{Binding V10, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P10}"
+                                       Visibility="{Binding V10, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V10, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="1"
+                            Grid.Column="4"
+                            Margin="5"
+                            Background="{Binding B11, Mode=OneWay}"
+                            Visibility="{Binding V11, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T11}"
+                                       Visibility="{Binding V11, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P11}"
+                                       Visibility="{Binding V11, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V11, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="1"
+                            Grid.Column="5"
+                            Margin="5"
+                            Background="{Binding B12, Mode=OneWay}"
+                            Visibility="{Binding V12, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T12}"
+                                       Visibility="{Binding V12, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P12}"
+                                       Visibility="{Binding V12, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V12, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Margin="5"
+                            Background="{Binding B13, Mode=OneWay}"
+                            Visibility="{Binding V13, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T13}"
+                                       Visibility="{Binding V13, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P13}"
+                                       Visibility="{Binding V13, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V13, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="5"
+                            Background="{Binding B14, Mode=OneWay}"
+                            Visibility="{Binding V14, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T14}"
+                                       Visibility="{Binding V14, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P14}"
+                                       Visibility="{Binding V14, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V14, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Margin="5"
+                            Background="{Binding B15, Mode=OneWay}"
+                            Visibility="{Binding V15, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T15}"
+                                       Visibility="{Binding V15, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P15}"
+                                       Visibility="{Binding V15, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V15, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="2"
+                            Grid.Column="3"
+                            Margin="5"
+                            Background="{Binding B16, Mode=OneWay}"
+                            Visibility="{Binding V16, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T16}"
+                                       Visibility="{Binding V16, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P16}"
+                                       Visibility="{Binding V16, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V16, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="2"
+                            Grid.Column="4"
+                            Margin="5"
+                            Background="{Binding B17, Mode=OneWay}"
+                            Visibility="{Binding V17, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T17}"
+                                       Visibility="{Binding V17, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P17}"
+                                       Visibility="{Binding V17, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V17, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="2"
+                            Grid.Column="5"
+                            Margin="5"
+                            Background="{Binding B18, Mode=OneWay}"
+                            Visibility="{Binding V18, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T18}"
+                                       Visibility="{Binding V18, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P18}"
+                                       Visibility="{Binding V18, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V18, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="5"
+                            Background="{Binding B19, Mode=OneWay}"
+                            Visibility="{Binding V19, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T19}"
+                                       Visibility="{Binding V19, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P19}"
+                                       Visibility="{Binding V19, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V19, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="5"
+                            Background="{Binding B20, Mode=OneWay}"
+                            Visibility="{Binding V20, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T20}"
+                                       Visibility="{Binding V20, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P20}"
+                                       Visibility="{Binding V20, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V20, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Margin="5"
+                            Background="{Binding B21, Mode=OneWay}"
+                            Visibility="{Binding V21, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T21}"
+                                       Visibility="{Binding V21, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P21}"
+                                       Visibility="{Binding V21, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V21, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="3"
+                            Grid.Column="3"
+                            Margin="5"
+                            Background="{Binding B22, Mode=OneWay}"
+                            Visibility="{Binding V22, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T22}"
+                                       Visibility="{Binding V22, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P22}"
+                                       Visibility="{Binding V22, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V22, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="3"
+                            Grid.Column="4"
+                            Margin="5"
+                            Background="{Binding B23, Mode=OneWay}"
+                            Visibility="{Binding V23, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T23}"
+                                       Visibility="{Binding V23, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P23}"
+                                       Visibility="{Binding V23, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V23, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border CornerRadius="15"
+                            Grid.Row="3"
+                            Grid.Column="5"
+                            Margin="5"
+                            Background="{Binding B24, Mode=OneWay}"
+                            Visibility="{Binding V24, Converter={StaticResource BoolToVisibility}}">
+                        <Grid>
+                            <TextBlock Text="{Binding T24}"
+                                       Visibility="{Binding V24, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemName}" />
+                            <TextBlock Text="{Binding P24}"
+                                       Visibility="{Binding V24, Converter={StaticResource BoolToVisibility}}"
+                                       Style="{StaticResource cashierItemPrice}" />
+                            <Button Command="{Binding AddItem}"
+                                    Visibility="{Binding V24, Converter={StaticResource BoolToVisibility}}"
+                                    Style="{StaticResource cashierButton}">
+                            </Button>
+                        </Grid>
+                    </Border>
+
+
+                </Grid>
+                <Grid Grid.Row="2"
+                           Background="Bisque"
+                           Margin="25,0,25,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button HorizontalContentAlignment="Left">
+                        <fa:IconImage Icon="ChevronLeft" />
+                    </Button>
+                    <Button Grid.Column="1"
+                            HorizontalContentAlignment="Right">
+                        <fa:IconImage Icon="ChevronRight" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="3"
+                      Background="{StaticResource darkgray1}">
+                    <DockPanel LastChildFill="False">
+                        <Button DockPanel.Dock="Left"
+                                Padding="10,0,10,0"
+                                HorizontalAlignment="Center">
+                            <TextBlock Text="All Items"
+                                       FontSize="30" />
+                        </Button>
+                        <Button DockPanel.Dock="Left"
+                                Padding="10,0,10,0"
+                                HorizontalAlignment="Center">
+                            <TextBlock Text="Main Dish"
+                                       FontSize="30" />
+                        </Button>
+                        <Button DockPanel.Dock="Left"
+                                Padding="10,0,10,0"
+                                HorizontalAlignment="Center">
+                            <TextBlock Text="Side Dish"
+                                       FontSize="30" />
+                        </Button>
+                        <Button DockPanel.Dock="Left"
+                                Padding="10,0,10,0"
+                                HorizontalAlignment="Center">
+                            <TextBlock Text="Drinks"
+                                       FontSize="30" />
+                        </Button>
+                        <ToggleButton DockPanel.Dock="Right"
+                                      Padding="10,0,10,0"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center">
+                            <fa:IconImage Icon="Lightbulb" />
+                        </ToggleButton>
+                    </DockPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
 </Window>
