@@ -83,6 +83,7 @@
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Repository\IUserRepository.cs" />
+    <Compile Include="Repository\ProductRepository.cs" />
     <Compile Include="Repository\RepositoryBase.cs" />
     <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="ViewModel\InventoryChild\AccountsPanelVM.cs" />
@@ -115,6 +116,9 @@
     </Compile>
     <Compile Include="View\TestLogin.xaml.cs">
       <DependentUpon>TestLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\User Control\NumberPad.xaml.cs">
+      <DependentUpon>NumberPad.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -164,6 +168,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\User Control\NumberPad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MVVM\RelayCommand.cs" />
@@ -197,7 +205,6 @@
   <ItemGroup>
     <Folder Include="ViewModel\CashierChild\" />
     <Folder Include="View\CashierChild\" />
-    <Folder Include="View\User Control\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\jackCropped.png" />

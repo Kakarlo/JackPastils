@@ -39,45 +39,96 @@
                                   Width="25*" />
                 <ColumnDefinition Width="75*" />
             </Grid.ColumnDefinitions>
-            <Border Background="{StaticResource darkgray1}"
+            <Border Background="{StaticResource lightbrown1}"
                     CornerRadius="20,0,0,20"
                     Padding="0,10,0,10">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="200" />
+                        <RowDefinition Height="160" />
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
-                        <fa:IconImage Icon="NoteSticky" />
-                        <TextBlock Text="Transaction Number: "
+                        <fa:IconImage Icon="UserCircle"
+                                      Height="30"
+                                      Margin="20,0 10, 0" />
+                        <TextBlock Text="Cashier: Hey There!"
                                    VerticalAlignment="Center"
                                    FontSize="20" />
                     </StackPanel>
                     <DataGrid Grid.Row="1"
-                              Background="Aquamarine"
+                              Background="White"
                               FontSize="16"
-                              x:Name="productList"
-                              IsReadOnly="true"
-                              AutoGenerateColumns="false"
+                              Style="{DynamicResource DataGridStyle1}"
+                              CellStyle="{DynamicResource DataGridCellStyle1}"
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
+                              RowStyle="{StaticResource DataGridRowStyle1}"
                               ItemsSource="{Binding Products, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedIndex="{Binding SelectedItem}">
+                              SelectedIndex="{Binding ProductsIndex}"
+                              >
+                        <!-- add Functionality to data grid-->
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Name"  
+                            <DataGridTextColumn Header="Name"
                                                 MinWidth="60"
                                                 Width="70*"
-                                                Binding="{Binding ProductName}"/>
+                                                Binding="{Binding ProductName}" />
                             <DataGridTextColumn Header="Qnt"
                                                 Width="70"
                                                 Binding="{Binding ProductQuantity}" />
                             <DataGridTextColumn Header="Price"
                                                 MinWidth="90"
-                                                Width="30*"
+                                                Width="30"
                                                 Binding="{Binding ProductTotal}" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button Grid.Row="2"
-                            Content="TEST" />
+                    <Grid Grid.Row="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Button Margin="2" 
+                                    Content="Change Quantity"
+                                    FontSize="18"
+                                    Command="{Binding ChangeQuantity}" />
+                            <Button Margin="2"
+                                    Content="Remove Item"
+                                    FontSize="18"
+                                    Grid.Column="1"
+                                    Command="{Binding RemoveItem}" />
+                        </Grid>
+                        <Border Grid.Row="1"
+                                Margin="2"
+                                Background="{StaticResource lightgreen1}">
+                        <TextBlock Text="{Binding Total}"
+                                   VerticalAlignment="Center"
+                                   Padding="10,0,0,0"
+                                   FontSize="30"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource textColor2}"
+                                   />
+                        </Border>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Button Margin="2"
+                                    Content="Pay Order"
+                                    FontSize="18" 
+                                    Command="{Binding PayOrder}"/>
+                            <Button Margin="2"
+                                    Grid.Column="1"
+                                    Content="Cancel Order"
+                                    FontSize="18"
+                                    Command="{Binding CancelOrder}" />
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Border>
             <Grid Grid.Column="1">
@@ -133,7 +184,7 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Border Grid.Row ="0"
+                    <Border Grid.Row="0"
                             Grid.Column="0"
                             CornerRadius="15"
                             Margin="5"
@@ -252,6 +303,7 @@
                                        Visibility="{Binding V6, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T6}"
                                     Visibility="{Binding V6, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -272,6 +324,7 @@
                                        Visibility="{Binding V7, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T7}"
                                     Visibility="{Binding V7, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -292,6 +345,7 @@
                                        Visibility="{Binding V8, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T8}"
                                     Visibility="{Binding V8, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -312,6 +366,7 @@
                                        Visibility="{Binding V9, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T9}"
                                     Visibility="{Binding V9, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -332,6 +387,7 @@
                                        Visibility="{Binding V10, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T10}"
                                     Visibility="{Binding V10, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -352,6 +408,7 @@
                                        Visibility="{Binding V11, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T11}"
                                     Visibility="{Binding V11, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -372,6 +429,7 @@
                                        Visibility="{Binding V12, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T12}"
                                     Visibility="{Binding V12, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -392,6 +450,7 @@
                                        Visibility="{Binding V13, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T13}"
                                     Visibility="{Binding V13, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -412,6 +471,7 @@
                                        Visibility="{Binding V14, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T14}"
                                     Visibility="{Binding V14, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -432,6 +492,7 @@
                                        Visibility="{Binding V15, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T15}"
                                     Visibility="{Binding V15, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -452,6 +513,7 @@
                                        Visibility="{Binding V16, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T16}"
                                     Visibility="{Binding V16, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -472,6 +534,7 @@
                                        Visibility="{Binding V17, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T17}"
                                     Visibility="{Binding V17, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -492,6 +555,7 @@
                                        Visibility="{Binding V18, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T18}"
                                     Visibility="{Binding V18, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -512,6 +576,7 @@
                                        Visibility="{Binding V19, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T19}"
                                     Visibility="{Binding V19, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -532,6 +597,7 @@
                                        Visibility="{Binding V20, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T20}"
                                     Visibility="{Binding V20, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -552,6 +618,7 @@
                                        Visibility="{Binding V21, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T21}"
                                     Visibility="{Binding V21, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -572,6 +639,7 @@
                                        Visibility="{Binding V22, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T22}"
                                     Visibility="{Binding V22, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -592,6 +660,7 @@
                                        Visibility="{Binding V23, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T23}"
                                     Visibility="{Binding V23, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -612,6 +681,7 @@
                                        Visibility="{Binding V24, Converter={StaticResource BoolToVisibility}}"
                                        Style="{StaticResource cashierItemPrice}" />
                             <Button Command="{Binding AddItem}"
+                                    CommandParameter="{Binding T24}"
                                     Visibility="{Binding V24, Converter={StaticResource BoolToVisibility}}"
                                     Style="{StaticResource cashierButton}">
                             </Button>
@@ -621,44 +691,57 @@
 
                 </Grid>
                 <Grid Grid.Row="2"
-                           Background="Bisque"
-                           Margin="25,0,25,10">
+                      Background="Bisque"
+                      Margin="25,0,25,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Button HorizontalContentAlignment="Left">
+                    <Button HorizontalContentAlignment="Left"
+                            Command="{Binding PreviousPage}"
+                            >
                         <fa:IconImage Icon="ChevronLeft" />
                     </Button>
                     <Button Grid.Column="1"
-                            HorizontalContentAlignment="Right">
+                            HorizontalContentAlignment="Right"
+                            Command="{Binding NextPage}"
+                            >
                         <fa:IconImage Icon="ChevronRight" />
                     </Button>
                 </Grid>
                 <Grid Grid.Row="3"
-                      Background="{StaticResource darkgray1}">
+                      Margin="25, 0"
+                      Background="{StaticResource lightbrown1}">
                     <DockPanel LastChildFill="False">
                         <Button DockPanel.Dock="Left"
                                 Padding="10,0,10,0"
-                                HorizontalAlignment="Center">
+                                HorizontalAlignment="Center"
+                                Command="{Binding ShowCat}"
+                                CommandParameter="All Items">
                             <TextBlock Text="All Items"
                                        FontSize="30" />
                         </Button>
                         <Button DockPanel.Dock="Left"
                                 Padding="10,0,10,0"
-                                HorizontalAlignment="Center">
+                                HorizontalAlignment="Center"
+                                Command="{Binding ShowCat}"
+                                CommandParameter="Main Dish">
                             <TextBlock Text="Main Dish"
                                        FontSize="30" />
                         </Button>
                         <Button DockPanel.Dock="Left"
                                 Padding="10,0,10,0"
-                                HorizontalAlignment="Center">
+                                HorizontalAlignment="Center"
+                                Command="{Binding ShowCat}"
+                                CommandParameter="Side Dish">
                             <TextBlock Text="Side Dish"
                                        FontSize="30" />
                         </Button>
                         <Button DockPanel.Dock="Left"
                                 Padding="10,0,10,0"
-                                HorizontalAlignment="Center">
+                                HorizontalAlignment="Center"
+                                Command="{Binding ShowCat}"
+                                CommandParameter="Drink">
                             <TextBlock Text="Drinks"
                                        FontSize="30" />
                         </Button>

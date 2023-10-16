@@ -34,5 +34,8 @@ namespace JackPastil.View {
             else { WindowState = WindowState.Maximized; }
         }
 
+        private void productList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) {
+
+        }
     }
 }

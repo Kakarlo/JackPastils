@@ -1,30 +1,42 @@
 ﻿using JackPastil.Model;
 using JackPastil.MVVM;
+using JackPastil.Repository;
+using JackPastil.View;
+using JackPastil.View.User_Control;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Dynamic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Policy;
+using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace JackPastil.ViewModel {
 
     public class CashierVM : ViewModelBase {
         // Variables
-        private readonly int row = 4; 
+        private readonly int row = 4;
         private readonly int column = 6;
+        private string _total, _numpadVal, currentPage = "";
+        private int pageNum, prevIndex, currentIndex, nextIndex, _productsIndex;
+        private bool _prevVis, _nextVis, withDecimal;
+        private float totalAmount = 0f, numpadValue = 0f, min;
+
         private System.Windows.Media.Brush[] brArr = new System.Windows.Media.Brush[24];
         private bool[] vArr = new bool[24];
         private string[] tArr = new string[24];
         private float[] pArr = new float[24];
-        ResourceDictionary resourceDict = new ResourceDictionary() {
+
+        // Repository
+        private readonly UserRepository userRepository;
+        private readonly UserModel userAccount;
+        private readonly ProductRepository productRepository;
+
+        // Products
+        private List<Product> productList;
+        // Styles
+        private readonly ResourceDictionary resourceDict = new ResourceDictionary() {
             Source = new Uri("/Styles/GenStyles.xaml", UriKind.Relative)
         };
 
@@ -33,88 +45,249 @@ namespace JackPastil.ViewModel {
 
         // Command
         public ICommand AddItem { get; }
+        public ICommand ShowCat { get; }
+        public ICommand PreviousPage { get; }
+        public ICommand NextPage { get; }
+        public ICommand PayOrder { get; }
+        public ICommand SaveOrder { get; }
+        public ICommand CancelOrder { get; }
+        public ICommand ChangeQuantity { get; }
+        public ICommand RemoveItem { get; }
+        public ICommand AddNumber { get; }
+        public ICommand DeleteNumber { get; }
+        public ICommand EnterButton { get; }
+        public ICommand AddDecimal { get; }
+        public ICommand CloseNumberPad { get; }
+
 
         public CashierVM() {
+            // Repository
+            userRepository = new UserRepository();
+            productRepository = new ProductRepository();
+            userAccount = userRepository.GetAccount(Thread.CurrentPrincipal.Identity.Name);
+            productList = productRepository.GetProducts();
+
+            // Command Initialization
             AddItem = new RelayCommand(AddItems);
-            ShowAllItems();
+            ShowCat = new RelayCommand(ShowCategory);
+            PreviousPage = new RelayCommand(Prev, CanPrev);
+            NextPage = new RelayCommand(Next, CanNext);
+            ChangeQuantity = new RelayCommand(ChangeQty, ProductIsSelected);
+            RemoveItem = new RelayCommand(RemoveItm, ProductIsSelected);
+            PayOrder = new RelayCommand(PayMenu, HasProduct);
+            CancelOrder = new RelayCommand(CancelOrd, HasProduct);
+            AddNumber = new RelayCommand(AddNum);
+            DeleteNumber = new RelayCommand(DeleteNum);
+            AddDecimal = new RelayCommand(AddNum, CanDec);
+            EnterButton = new RelayCommand(AddNum, CanEnter);
+            CloseNumberPad = new RelayCommand(CloseNumpad);
+
+            // Values Initialize
+            ProductsIndex = -1;
+            Total = "Total: ";
+            NumpadValue = "0";
+            ShowCategory("All Items");
         }
 
-        public void ShowAllItems() {
-            if (product.Length > row * column) {
-                // enable a next button
+        private bool CanEnter(object arg) {
+            return numpadValue >= min;
+        }
+        private bool CanDec(object arg) {
+            return withDecimal;
+        }
+        private void DeleteNum(object arg) {
+            if (NumpadValue.Length > 1) {
+                NumpadValue = NumpadValue.Remove(NumpadValue.Length - 1);
+                numpadValue = (float)Convert.ToDouble(NumpadValue);
+            } else if (NumpadValue.Length == 1) {
+                NumpadValue = "0";
+                numpadValue = (float)Convert.ToDouble(NumpadValue);
             }
-            for (int i = 0; i < 24; i++) {
-                if (product[i] == null) {
+        }
+        private void AddNum(object arg) {
+            if (arg == null) return;
+            if (arg.ToString().Equals(".") && !NumpadValue.Contains(".")) {
+                NumpadValue += arg.ToString();
+                return;
+            }
+            if (numpadValue < 1000000f && !arg.ToString().Equals(".")) {
+                numpadValue = (float)Convert.ToDouble( (NumpadValue + arg));
+                NumpadValue = Convert.ToString(numpadValue);
+            }
+        }
+        private void CloseNumpad(object arg) {
+            numpadValue = 0;
+            NumpadValue = "0";
+        }
+        private bool ProductIsSelected(object arg) {
+            return ProductsIndex > -1;
+        }
+        private bool HasProduct(object arg) {
+            return totalAmount > 0;
+        }
+        private void Numpad() {
+            NumberPad np = new NumberPad();
+            np.DataContext = this;
+            np.ShowDialog();
+        }
+        private void RemoveItm(object obj) {
+            totalAmount -= Products[ProductsIndex].ProductTotal;
+            Products.RemoveAt(ProductsIndex);
+            Total = "Total: " + String.Format("{0:0.00}", totalAmount);
+        }
+
+        private void PayMenu(object arg) {
+            min = totalAmount;
+            withDecimal = true;
+            Numpad();
+            if (numpadValue > 0) {
+                PrintSale();
+                //SaveOrdr();
+                numpadValue = 0;
+                NumpadValue = "0";
+            }
+        }
+
+        private void ChangeQty(object obj) {
+            min = 1;
+            withDecimal = false;
+            Numpad();
+            if (numpadValue > 0) {
+                int quantity = Convert.ToInt32(numpadValue);
+                totalAmount -= Products[ProductsIndex].ProductTotal;
+                Products[ProductsIndex].ProductQuantity = quantity;
+                Products[ProductsIndex].ProductTotal = Products[ProductsIndex].ProductQuantity * Products[ProductsIndex].ProductPrice;
+                totalAmount += Products[ProductsIndex].ProductTotal;
+                Total = "Total: " + String.Format("{0:0.00}", totalAmount);
+                numpadValue = 0;
+                NumpadValue = "0";
+            }
+        }
+
+        private bool CanNext(object arg) {
+            return _nextVis;
+        }
+
+        private bool CanPrev(object arg) {
+            return _prevVis;
+        }
+
+        public void ShowCategory(object arg) {
+            if (!currentPage.Equals(arg)) {
+                pageNum = 0;
+                prevIndex = currentIndex = nextIndex = 0;
+            }
+            currentPage = (string)arg;
+            NextVis = PrevVis = false;
+            if (pageNum > 0) PrevVis = true;
+            int i = currentIndex, j = 0;
+            while (i < productList.Count) {
+                if (j == row * column) {
+                    NextVis = true;
+                    nextIndex = i;
                     break;
                 }
-                // Color
-                if (product[i].ProductType.Equals("Main Dish")) {
-                    brArr[i] = resourceDict["menuCategory1"] as System.Windows.Media.Brush;
+                if (arg.Equals("All Items")) {
+                    SetButton(i, j++);
                 }
-                else if (product[i].ProductType.Equals("Side Dish")) {
-                    brArr[i] = resourceDict["menuCategory2"] as System.Windows.Media.Brush;
+                else {
+                    if (productList[i].ProductType.Equals(arg)) {
+                        SetButton(i, j++);
+                    }
                 }
-                else if (product[i].ProductType.Equals("Drinks")) {
-                    brArr[i] = resourceDict["menuCategory3"] as System.Windows.Media.Brush;
-                }
-                // Visibility
-                vArr[i] = true;
-                // Name
-                tArr[i] = product[i].ProductName;
-                // Price
-                pArr[i] = product[i].ProductPrice;
-            // set content of button and its color
+                i++;
+            }
+            while (j < row * column) {
+                vArr[j] = false;
+                OnPropertyChanged("V" + (j++ + 1));
             }
         }
 
         public void AddItems(object arg) {
             int index = 0;
-            for (int i = 0; i < product.Length; i++) {
-                if (product[i].ProductName.Equals(arg)) {
+            for (int i = 0; i < productList.Count; i++) {
+                if (productList[i].ProductName.Equals(arg)) {
                     index = i; break;
                 }
             }
-            CartItem test = new CartItem(product[index]);
+            CartItem test = new CartItem(productList[index]);
             bool found = false;
             for (int i = 0; i < Products.Count; i++) {
                 if (Products[i].ProductName.Equals(arg)) {
+                    totalAmount -= Products[i].ProductTotal;
                     Products[i].ProductQuantity = Products[i].ProductQuantity + 1;
                     Products[i].ProductTotal = Products[i].ProductQuantity * Products[i].ProductPrice;
+                    totalAmount += Products[i].ProductTotal;
                     found = true;
                     break;
                 }
             }
             if (!found) {
+                totalAmount += test.ProductTotal;
                 Products.Add(test);
             }
+            Total = "Total: " + String.Format("{0:0.00}", totalAmount);
         }
 
-        Product[] product = new Product[] {
-        new Product("Pastil", 20.1f, "Main Dish"),
-        new Product("Proben", 10.2f, "Main Dish"),
-        new Product("Sprite", 12.2f, "Drinks"),
-        new Product("Kwek-Kwek", 13.2f, "Side Dish"),
-        new Product("Isaw", 21.2f, "Main Dish"),
-        new Product("Water", 22.2f, "Drinks"),
-        new Product("Pastil", 20.1f, "Main Dish"),
-        new Product("Proben", 10.2f, "Main Dish"),
-        new Product("Water", 22.2f, "Drinks"),
-        new Product("Pastil", 20.1f, "Main Dish"),
-        new Product("Proben", 10.2f, "Main Dish"),
-        new Product("Sprite", 12.2f, "Drinks"),
-        new Product("Kwek-Kwek", 13.2f, "Side Dish"),
-        new Product("Isaw", 21.2f, "Main Dish"),
-        new Product("Water", 22.2f, "Drinks"),
-        new Product("Pastil", 20.1f, "Main Dish"),
-        new Product("Proben", 10.2f, "Main Dish"),
-        new Product("Sprite", 12.2f, "Drinks"),
-        new Product("Kwek-Kwek", 13.2f, "Side Dish"),
-        new Product("Proben", 10.2f, "Main Dish"),
-        new Product("Sprite", 12.2f, "Drinks"),
-        new Product("Kwek-Kwek", 13.2f, "Side Dish"),
-        new Product("Isaw", 21.2f, "Main Dish"),
-        new Product("Water", 22.2f, "Drinks")
-        };
+        public void SaveOrdr() {
+            productRepository.AddSale(Products, userAccount);
+            Products.Clear();
+            totalAmount = 0;
+            Total = string.Empty;
+        }
+
+        public void CancelOrd(object arg) {
+            Products.Clear();
+            totalAmount = 0;
+            Total = string.Empty;
+        }
+
+        public void Prev(object arg) {
+            pageNum--;
+            nextIndex = currentIndex;
+            currentIndex = prevIndex;
+            ShowCategory(currentPage);
+        }
+
+        public void Next(object arg) {
+            pageNum++;
+            prevIndex = currentIndex;
+            currentIndex = nextIndex;
+            ShowCategory(currentPage);
+        }
+        public void PrintSale() {
+            string hold = "Transactional ID: " + productRepository.GetTransactionID() +
+                "\n\n------------------| Jack's Pastil |------------------\n\n" +
+                "No#\tProduct Name\tQty\tPrice\n";
+            for (int i = 0; i < Products.Count; i++) {
+                hold += $" {i,-5}\t{Products[i].ProductName,-20}\t{Products[i].ProductQuantity}\t{Products[i].ProductTotal}\n";
+            }
+            hold += "\n\tTotal: " + totalAmount;
+            MessageBox.Show(hold);
+        }
+
+        public void SetButton(int i, int j) {
+            // Color
+            if (productList[i].ProductType.Equals("Main Dish")) {
+                brArr[j] = resourceDict["menuCategory1"] as System.Windows.Media.Brush;
+            }
+            else if (productList[i].ProductType.Equals("Side Dish")) {
+                brArr[j] = resourceDict["menuCategory2"] as System.Windows.Media.Brush;
+            }
+            else if (productList[i].ProductType.Equals("Drink")) {
+                brArr[j] = resourceDict["menuCategory3"] as System.Windows.Media.Brush;
+            }
+            // Visibility
+            vArr[j] = true;
+            // Name
+            tArr[j] = productList[i].ProductName;
+            // Price
+            pArr[j] = productList[i].ProductPrice;
+            OnPropertyChanged("B" + (j + 1));
+            OnPropertyChanged("V" + (j + 1));
+            OnPropertyChanged("T" + (j + 1));
+            OnPropertyChanged("P" + (j + 1));
+        }
 
         //Property
         public System.Windows.Media.Brush B1 { get => brArr[0]; }
@@ -221,6 +394,10 @@ namespace JackPastil.ViewModel {
         public float P24 { get => pArr[23]; }
         public float P25 { get => pArr[24]; }
         public float P26 { get => pArr[25]; }
-        
+        public bool PrevVis { get => _prevVis; set { _prevVis = value; OnPropertyChanged(); } }
+        public bool NextVis { get => _nextVis; set { _nextVis = value; OnPropertyChanged(); } }
+        public int ProductsIndex { get => _productsIndex; set { _productsIndex = value; OnPropertyChanged(); } }
+        public string Total { get => _total; set { _total = value; OnPropertyChanged(); } }
+        public string NumpadValue { get => _numpadVal; set { _numpadVal = value; OnPropertyChanged(); } }
     }
 }

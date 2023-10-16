@@ -2,7 +2,8 @@
 using JackPastil.Model;
 using JackPastil.MVVM;
 using JackPastil.Repository;
-using JackPastil.View.InventoryChild;
+using System.Threading;
+using System.Windows;
 using System.Windows.Input;
 
 namespace JackPastil.ViewModel {
@@ -28,8 +29,9 @@ namespace JackPastil.ViewModel {
         public ICommand ShowProductsPanel { get; }
         public ICommand ShowAccountsPanel { get; }
         public InventoryVM() {
+            // User Account
             userRepository = new UserRepository();
-            CurrentUser = new UserModel();
+            CurrentUser = userRepository.GetAccount(Thread.CurrentPrincipal.Identity.Name);
 
             // Command Initialization
             ShowSalesPanel = new RelayCommand(ExecuteShowSalesPanel);

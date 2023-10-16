@@ -1,6 +1,9 @@
 ﻿using JackPastil.MVVM;
 using JackPastil.Repository;
 using JackPastil.View;
+using System;
+using System.Security.Principal;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 
@@ -48,10 +51,12 @@ namespace JackPastil.ViewModel {
             if (isValidUser) {
                 string role = userRepository.GetRole(Username);
                 if (role.Equals("ADMIN")) {
+                    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Username), null);
                     var mainWindow = new Inventory();
                     mainWindow.Show();
                 }
                 else if (role.Equals("CASHIER")) {
+                    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Username), null);
                     var mainWindow = new Cashier();
                     mainWindow.Show();
                 }

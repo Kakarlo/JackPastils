@@ -14,12 +14,8 @@ namespace JackPastil.Model {
         public int ProductQuantity { get => _productQuantity; set { _productQuantity = value; OnPropertyChanged(); } }
         public float ProductTotal { get => _productTotal; set { _productTotal = value;  OnPropertyChanged(); } }
 
-        public CartItem(string name, float price, string type) : base(name, price, type) {
-            ProductQuantity = 1;
-            ProductTotal = ProductPrice * ProductQuantity;
-        }
-
         public CartItem(Product product) : base(product.ProductName, product.ProductPrice, product.ProductType) {
+            ProductId = product.ProductId;
             ProductQuantity = 1;
             ProductTotal = ProductPrice * ProductQuantity;
         }

@@ -1,11 +1,12 @@
-﻿using System.Data.SqlClient;
+﻿using JackPastil.Model;
+using System.Data.SqlClient;
 
 namespace JackPastil.Repository {
     public class UserRepository : RepositoryBase {
         public bool AuthenticateUser(string username, string password) {
             bool validUser;
-            using (var connection = GetConnection())
-            using (var command = new SqlCommand()) {
+            using (SqlConnection connection = GetConnection())
+            using (SqlCommand command = new SqlCommand()) {
                 connection.Open();
                 command.Connection = connection;
                 command.CommandText = "select * from tblUser where username=@username and password=@password";
@@ -20,8 +21,8 @@ namespace JackPastil.Repository {
 
         public string GetRole(string username) {
             string role = "";
-            using (var connection = GetConnection())
-            using (var command = new SqlCommand()) {
+            using (SqlConnection connection = GetConnection())
+            using (SqlCommand command = new SqlCommand()) {
                 connection.Open();
                 command.Connection = connection;
                 command.CommandText = "select * from tblUser where username=@username";
@@ -33,6 +34,25 @@ namespace JackPastil.Repository {
                 }
             }
             return role;
+        }
+
+        public UserModel GetAccount(string username) {
+            UserModel acc = new UserModel();
+            using (SqlConnection connection = GetConnection())
+            using (SqlCommand command = new SqlCommand()) {
+                connection.Open();
+                command.Connection = connection;
+                command.CommandText = "select * from tblUser where username=@username";
+                command.Parameters.AddWithValue("username", username);
+                using (var reader = command.ExecuteReader()) {
+                    while (reader.Read()) {
+                        acc.Username = reader[1].ToString();
+                        acc.FirstName = reader[4].ToString();
+                        acc.LastName = reader[5].ToString();
+                    }
+                }
+            }
+            return acc;
         }
     }
 }
