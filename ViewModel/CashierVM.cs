@@ -18,7 +18,7 @@ namespace JackPastil.ViewModel {
         // Variables
         private readonly int row = 4;
         private readonly int column = 6;
-        private string _total, _numpadVal, currentPage = "";
+        private string _total, _numpadVal, currentPage = "", cashier;
         private int pageNum, prevIndex, currentIndex, nextIndex, _productsIndex;
         private bool _prevVis, _nextVis, withDecimal;
         private float totalAmount = 0f, numpadValue = 0f, min;
@@ -86,6 +86,7 @@ namespace JackPastil.ViewModel {
             ProductsIndex = -1;
             Total = "Total: ";
             NumpadValue = "0";
+            CashierName = "Cashier: " + userAccount.Username;
             ShowCategory("All Items");
         }
 
@@ -399,5 +400,6 @@ namespace JackPastil.ViewModel {
         public int ProductsIndex { get => _productsIndex; set { _productsIndex = value; OnPropertyChanged(); } }
         public string Total { get => _total; set { _total = value; OnPropertyChanged(); } }
         public string NumpadValue { get => _numpadVal; set { _numpadVal = value; OnPropertyChanged(); } }
+        public string CashierName { get => cashier; set { cashier = value; OnPropertyChanged(); } }
     }
 }

@@ -52,7 +52,7 @@
                         <fa:IconImage Icon="UserCircle"
                                       Height="30"
                                       Margin="20,0 10, 0" />
-                        <TextBlock Text="Cashier: Hey There!"
+                        <TextBlock Text="{Binding CashierName}"
                                    VerticalAlignment="Center"
                                    FontSize="20" />
                     </StackPanel>

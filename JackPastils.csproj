@@ -81,7 +81,9 @@
     </ApplicationDefinition>
     <Compile Include="Model\CartItem.cs" />
     <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\Sales.cs" />
     <Compile Include="Model\UserModel.cs" />
+    <Compile Include="Repository\InventoryRepository.cs" />
     <Compile Include="Repository\IUserRepository.cs" />
     <Compile Include="Repository\ProductRepository.cs" />
     <Compile Include="Repository\RepositoryBase.cs" />

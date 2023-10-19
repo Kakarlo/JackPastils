@@ -5,17 +5,124 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:JackPastil.View.InventoryChild"
              xmlns:vm="clr-namespace:JackPastil.ViewModel"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              d:DataContext="{d:DesignInstance Type=vm:SalesPanelVM}"
              mc:Ignorable="d"
              d:DesignHeight="590"
              d:DesignWidth="950">
-    <Grid Background="BurlyWood">
-        <DataGrid Style="{DynamicResource DataGridStyle1}"
-                  CellStyle="{DynamicResource DataGridCellStyle1}"
-                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
-                  RowStyle="{DynamicResource DataGridRowStyle1}">
+    
+    <Border CornerRadius="20"
+            Background="white"
+            Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition />
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <DockPanel LastChildFill="false">
+                <RadioButton Style="{StaticResource salesButton}"
+                             Tag="{StaticResource textColor2}"
+                             VerticalAlignment="Bottom"
+                             IsChecked="True"
+                             DockPanel.Dock="Left"
+                             Command="">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Daily Sales"
+                                   Padding="10 ,0"
+                                   Style="{StaticResource inventoryButtonText}" />
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton Style="{StaticResource salesButton}"
+                             Tag="{StaticResource textColor2}"
+                             VerticalAlignment="Bottom"
+                             DockPanel.Dock="Left"
+                             Command="">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Monthly Sales"
+                                   Padding="10 ,0"
+                                   Style="{StaticResource inventoryButtonText}" />
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton Style="{StaticResource salesButton}"
+                             Tag="{StaticResource textColor2}"
+                             VerticalAlignment="Bottom"
+                             DockPanel.Dock="Left"
+                             Command="">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Total Sales"
+                                   Padding="10 ,0"
+                                   Style="{StaticResource inventoryButtonText}" />
+                    </StackPanel>
+                </RadioButton>
+                <Grid Width="200"
+                      DockPanel.Dock="Right"
+                      HorizontalAlignment="Right"
+                      Grid.Row="4">
+                    <TextBlock Margin="15 0"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               IsHitTestVisible="False"
+                               Background="Transparent"
+                               Panel.ZIndex="1"
+                               Text="Search"
+                               Visibility="Visible" />
+                    <TextBox x:Name="txtFilter"
+                             Background="Transparent"
+                             Margin="0, 5"
+                             Style="{StaticResource loginTextbox}" />
+                    <fa:IconImage Icon="MagnifyingGlass"
+                                           Width="15"
+                                           Height="15"
+                                           VerticalAlignment="Center"
+                                           Margin="0 0 15 0"
+                                           Foreground="DimGray"
+                                           HorizontalAlignment="Right" />
 
-        </DataGrid>
-
-    </Grid>
+                </Grid>
+            </DockPanel>
+            <DataGrid Grid.Row="1"
+                      FontSize="16"
+                      Style="{DynamicResource DataGridStyle1}"
+                      CellStyle="{DynamicResource DataGridCellStyle1}"
+                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
+                      RowStyle="{StaticResource DataGridRowStyle1}"
+                      ItemsSource="{Binding Sales, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedValue="{Binding SalesIndex}"
+                      >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Transaction ID"
+                                        Width="150"
+                                        Binding="{Binding TransactionID}" />
+                    <DataGridTextColumn Header="Product Name"
+                                        Width="*"
+                                        Binding="{Binding ProductName}" />
+                    <DataGridTextColumn Header="Quantity"
+                                        Width="100"
+                                        Binding="{Binding ProductQuantity}" />
+                    <DataGridTextColumn Header="Total"
+                                        Width="100"
+                                        Binding="{Binding ProductTotal}" />
+                    <DataGridTextColumn Header="Cashier"
+                                        Width="*"
+                                        Binding="{Binding CashierUsername}" />
+                    <DataGridTextColumn Header="Date"
+                                        Width="120"
+                                        Binding="{Binding TransactionDate}" />
+                    <DataGridTextColumn Header="Time"
+                                        Width="120"
+                                        Binding="{Binding TransactionTime}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <DockPanel Grid.Row="2" LastChildFill="False">
+                <Button DockPanel.Dock="Left"
+                        Margin="0, 10"
+                        Style="{StaticResource loginButton}"
+                        Command="{Binding Check}">
+                    <TextBlock Text="Delete row"
+                               Padding="10,0"/>
+                </Button>
+            </DockPanel>
+        </Grid>
+    </Border>
 </UserControl>
