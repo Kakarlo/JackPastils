@@ -15,27 +15,53 @@
             Padding="10">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
                 <RowDefinition />
                 <RowDefinition Height="50" />
             </Grid.RowDefinitions>
-            <DockPanel LastChildFill="false">
-
-                <Grid Width="200"
-                      DockPanel.Dock="Right"
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="250" />
+                </Grid.ColumnDefinitions>
+                <DataGrid Grid.Row="1"
+                          FontSize="16"
+                          Style="{DynamicResource DataGridStyle1}"
+                          CellStyle="{DynamicResource DataGridCellStyle1}"
+                          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
+                          RowStyle="{StaticResource DataGridRowStyle1}"
+                          ItemsSource="{Binding Inventory, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding CurrentProduct}"
+                          SelectedIndex="{Binding Index}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Product Name"
+                                            Width="*"
+                                            Binding="{Binding ProductName}" />
+                        <DataGridTextColumn Header="Product Type"
+                                            Width="*"
+                                            Binding="{Binding ProductType}" />
+                        <DataGridTextColumn Header="Stock"
+                                            Width="*"
+                                            Binding="{Binding ProductStock}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Grid Grid.Column="1"
+                      Width="200"
+                      Height="50"
                       HorizontalAlignment="Right"
+                      VerticalAlignment="Top"
                       Grid.Row="4">
-                    <TextBlock Margin="15 0"
+                    <TextBlock Margin="10 0"
                                VerticalAlignment="Center"
                                Foreground="Black"
                                IsHitTestVisible="False"
                                Background="Transparent"
                                Panel.ZIndex="1"
                                Text="Search"
-                               Visibility="Visible" />
+                               FontSize="16" />
                     <TextBox x:Name="txtFilter"
                              Background="Transparent"
                              Margin="0, 5"
+                             Padding="5,0,30,0"
                              Style="{StaticResource loginTextbox}" />
                     <fa:IconImage Icon="MagnifyingGlass"
                                   Width="15"
@@ -46,86 +72,91 @@
                                   HorizontalAlignment="Right" />
 
                 </Grid>
-            </DockPanel>
+                <Border Grid.Column="1"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Height="350"
+                        Width="220"
+                        CornerRadius="15"
+                        Background="White"
+                        Padding="10">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="1"
+                                          Color="#BBBBBB"
+                                          BlurRadius="5" />
+                    </Border.Effect>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Name"
+                                       FontSize="16" />
+                            <TextBox Style="{StaticResource loginTextbox}"
+                                     Text="{Binding ProductNameBox, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0, 5"
+                                     Padding="0, 5" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="1">
+                            <TextBlock Text="Type"
+                                       FontSize="16" />
+                            <TextBox Style="{StaticResource loginTextbox}"
+                                     Text="{Binding ProductTypeBox, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0, 5"
+                                     Padding="0, 5" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="2">
+                            <TextBlock Text="Price"
+                                       FontSize="16" />
+                            <TextBox Style="{StaticResource loginTextbox}"
+                                     Text="{Binding ProductStockBox, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0, 5"
+                                     Padding="0, 5" />
+                        </StackPanel>
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Button Height="40"
+                                    Width="90"
+                                    Content="Clear"
+                                    FontSize="20"
+                                    Command="{Binding ClearRow}"
+                                    Style="{StaticResource numpadButton}" />
+                            <Button Grid.Column="1"
+                                    Height="40"
+                                    Width="90"
+                                    Content="Update"
+                                    FontSize="20"
+                                    Command="{Binding UpdateRow}"
+                                    Style="{StaticResource numpadButton}" />
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="50" />
                 </Grid.ColumnDefinitions>
-                <DataGrid Grid.Row="1"
-                          FontSize="16"
-                          Style="{DynamicResource DataGridStyle1}"
-                          CellStyle="{DynamicResource DataGridCellStyle1}"
-                          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
-                          RowStyle="{StaticResource DataGridRowStyle1}"
-                          ItemsSource="{Binding Inventory, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedIndex="{Binding ProductsIndex}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Product Name"
-                                            Width="*"
-                                            Binding="{Binding TransactionID}" />
-                        <DataGridTextColumn Header="Product Type"
-                                            Width="*"
-                                            Binding="{Binding ProductName}" />
-                        <DataGridTextColumn Header="Product Price"
-                                            Width="*"
-                                            Binding="{Binding ProductQuantity}" />
-                        <DataGridTextColumn Header="Stock"
-                                            Width="*"
-                                            Binding="{Binding ProductTotal}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-                <Grid Grid.Column="1"
-                      VerticalAlignment="Center"
-                      HorizontalAlignment="Center"
-                      Height="300"
-                      Width="200">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Name"/>
-                    <TextBox Grid.Column="1"
-                             Text="{Binding ProductNameBox}"/>
-                    <TextBlock Grid.Row="1"
-                               Text="Type" />
-                    <TextBox Grid.Row="1"
-                             Grid.Column="1"
-                             Text="{Binding ProductTypeBox}" />
-                    <TextBlock Grid.Row="2"
-                               Text="Price" />
-                    <TextBox Grid.Row="2"
-                             Grid.Column="1"
-                             Text="{Binding ProductPriceBox}" />
-                    <TextBlock Grid.Row="3"
-                               Text="Stock" />
-                    <TextBox Grid.Row="3"
-                             Grid.Column="1"
-                             Text="{Binding ProductStockBox}" />
-                    <Button Grid.ColumnSpan="2"
-                            Grid.Row="4" 
-                            Content="Update"
-                            Margin="10"
-                            Style="{StaticResource loginButton}"/>
-                </Grid>
+                <TextBlock Grid.Column="0"
+                           Text="{Binding PageNum}"
+                           FontSize="20"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center" />
+                <Button Grid.Column="2"
+                        Content="forward"
+                        Command="{Binding NextPage}" />
+                <Button Grid.Column="1"
+                        Content="backward"
+                        Command="{Binding PreviousPage}" />
             </Grid>
-            
-            <DockPanel Grid.Row="2"
-                       LastChildFill="False">
-                <Button DockPanel.Dock="Left"
-                        Margin="0, 10"
-                        Style="{StaticResource loginButton}">
-                    <TextBlock Text="Delete row"
-                               Padding="10,0" />
-                </Button>
-            </DockPanel>
         </Grid>
     </Border>
 </UserControl>

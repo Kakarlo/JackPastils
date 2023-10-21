@@ -143,7 +143,7 @@ namespace JackPastil.ViewModel {
             Numpad();
             if (numpadValue > 0) {
                 PrintSale();
-                //SaveOrdr();
+                SaveOrdr();
                 numpadValue = 0;
                 NumpadValue = "0";
             }
