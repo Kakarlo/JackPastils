@@ -1,4 +1,5 @@
 ﻿using JackPastil.View;
+using System;
 using System.Windows;
 
 namespace JackPastil {
@@ -9,13 +10,6 @@ namespace JackPastil {
         protected void ApplicationStart(object sender, StartupEventArgs e) {
             var loginView = new TestLogin();
             loginView.Show();
-            /*
-            loginView.IsVisibleChanged += (s, ev) => {
-                if (loginView.IsVisible == false && loginView.IsLoaded) {
-                    loginView.Close();
-                }
-            };
-            */
         }
 
     }

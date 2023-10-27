@@ -7,7 +7,7 @@ namespace JackPastil.Repository {
         private readonly string _connectionString;
 
         public RepositoryBase() {
-            _connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Admin\\source\\repos\\JackPastils\\Database\\JacksDB.mdf;Integrated Security=True";
+            _connectionString = Properties.Settings.Default.JackDB;
         }
         protected SqlConnection GetConnection() {
             return new SqlConnection(_connectionString);
