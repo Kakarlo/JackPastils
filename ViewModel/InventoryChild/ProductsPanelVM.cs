@@ -82,7 +82,7 @@ namespace JackPastil.ViewModel {
             currentProduct.ProductName = ProductNameBox;
             currentProduct.ProductType = ProductTypeBox;
             currentProduct.ProductPrice = ProductPriceBox;
-            inventoryRepository.UpdateInventory(currentProduct);
+            inventoryRepository.UpdateProduct(currentProduct);
             ClearValues();
             RefreshTable();
         }

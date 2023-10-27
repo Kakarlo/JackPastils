@@ -180,7 +180,7 @@ namespace JackPastil.Repository {
             using (SqlCommand command = new SqlCommand()) {
                 connection.Open();
                 command.Connection = connection;
-                command.CommandText = "SELECT * FROM tblProduct ORDER BY Type DESC" +
+                command.CommandText = "SELECT * FROM tblProduct ORDER BY Type DESC, ProductID" +
                     $" OFFSET {(range * offset)} ROWS FETCH NEXT {range} ROWS ONLY";
                 using (SqlDataReader reader = command.ExecuteReader()) {
                     while (reader.Read()) {
@@ -201,7 +201,7 @@ namespace JackPastil.Repository {
             using (SqlCommand command = new SqlCommand()) {
                 connection.Open();
                 command.Connection = connection;
-                command.CommandText = "SELECT * FROM tblProduct ORDER BY Type DESC" +
+                command.CommandText = "SELECT * FROM tblProduct ORDER BY Type DESC, ProductID" +
                     $" OFFSET {(range * offset)} ROWS FETCH NEXT {range} ROWS ONLY";
                 using (SqlDataReader reader = command.ExecuteReader()) {
                     while (reader.Read()) {

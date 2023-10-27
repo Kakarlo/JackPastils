@@ -14,11 +14,15 @@
             Background="white"
             Padding="10">
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="92*" />
+                <ColumnDefinition Width="373*" />
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="50" />
             </Grid.RowDefinitions>
-            <Grid>
+            <Grid Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="250" />
@@ -109,7 +113,7 @@
                                      Padding="0, 5" />
                         </StackPanel>
                         <StackPanel Grid.Row="2">
-                            <TextBlock Text="Price"
+                            <TextBlock Text="Stock"
                                        FontSize="16" />
                             <TextBox Style="{StaticResource loginTextbox}"
                                      Text="{Binding ProductStockBox, UpdateSourceTrigger=PropertyChanged}"
@@ -139,7 +143,8 @@
                 </Border>
             </Grid>
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1"
+                  Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="50" />
@@ -151,11 +156,21 @@
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center" />
                 <Button Grid.Column="2"
-                        Content="forward"
-                        Command="{Binding NextPage}" />
+                        Command="{Binding NextPage}"
+                        Style="{StaticResource cashierMenuButton}"
+                        Background="{StaticResource blue2}"
+                        Height="30">
+                    <fa:IconImage Icon="ChevronRight"
+                                  Height="20" />
+                </Button>
                 <Button Grid.Column="1"
-                        Content="backward"
-                        Command="{Binding PreviousPage}" />
+                        Command="{Binding PreviousPage}"
+                        Style="{StaticResource cashierMenuButton}"
+                        Background="{StaticResource blue2}"
+                        Height="30">
+                    <fa:IconImage Icon="ChevronLeft"
+                                  Height="20" />
+                </Button>
             </Grid>
         </Grid>
     </Border>

@@ -95,12 +95,16 @@
                             <Button Margin="2" 
                                     Content="Change Quantity"
                                     FontSize="18"
-                                    Command="{Binding ChangeQuantity}" />
+                                    Command="{Binding ChangeQuantity}"
+                                    Style="{StaticResource cashierMenuButton}"
+                                    Background="#d8c4b9"/>
                             <Button Margin="2"
                                     Content="Remove Item"
                                     FontSize="18"
                                     Grid.Column="1"
-                                    Command="{Binding RemoveItem}" />
+                                    Command="{Binding RemoveItem}"
+                                    Style="{StaticResource cashierMenuButton}"
+                                    Background="#fad593" />
                         </Grid>
                         <Border Grid.Row="1"
                                 Margin="2"
@@ -120,13 +124,17 @@
                             </Grid.ColumnDefinitions>
                             <Button Margin="2"
                                     Content="Pay Order"
-                                    FontSize="18" 
-                                    Command="{Binding PayOrder}"/>
+                                    FontSize="18"
+                                    Command="{Binding PayOrder}"
+                                    Style="{StaticResource cashierMenuButton}"
+                                    Background="#a2cad3" />
                             <Button Margin="2"
                                     Grid.Column="1"
                                     Content="Cancel Order"
                                     FontSize="18"
-                                    Command="{Binding CancelOrder}" />
+                                    Command="{Binding CancelOrder}"
+                                    Style="{StaticResource cashierMenuButton}"
+                                    Background="#d3c9e8" />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -691,57 +699,64 @@
 
                 </Grid>
                 <Grid Grid.Row="2"
-                      Background="Bisque"
                       Margin="25,0,25,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Button HorizontalContentAlignment="Left"
+                    <Button HorizontalContentAlignment="Center"
                             Command="{Binding PreviousPage}"
+                            Style="{StaticResource cashierMenuButton}"
+                            Background="#E8D2C9"
                             >
                         <fa:IconImage Icon="ChevronLeft" />
                     </Button>
                     <Button Grid.Column="1"
-                            HorizontalContentAlignment="Right"
+                            HorizontalContentAlignment="Center"
                             Command="{Binding NextPage}"
-                            >
+                            Style="{StaticResource cashierMenuButton}"
+                            Background="#E8D2C9">
                         <fa:IconImage Icon="ChevronRight" />
                     </Button>
                 </Grid>
                 <Grid Grid.Row="3"
                       Margin="25, 0"
                       Background="{StaticResource lightbrown1}">
-                    <DockPanel LastChildFill="False">
+                    <StackPanel Orientation="Horizontal">
                         <Button DockPanel.Dock="Left"
-                                Padding="10,0,10,0"
-                                HorizontalAlignment="Center"
                                 Command="{Binding ShowCat}"
-                                CommandParameter="All Items">
+                                CommandParameter="All Items"
+                                Background="#e9aa87"
+                                Style="{StaticResource cashierMenuButton}"
+                                Width="190"
+                                Margin="0, 0, 5, 0">
                             <TextBlock Text="All Items"
                                        FontSize="30" />
                         </Button>
-                        <Button DockPanel.Dock="Left"
-                                Padding="10,0,10,0"
-                                HorizontalAlignment="Center"
-                                Command="{Binding ShowCat}"
-                                CommandParameter="Main Dish">
+                        <Button Command="{Binding ShowCat}"
+                                CommandParameter="Main Dish"
+                                Background="#e9aa87"
+                                Style="{StaticResource cashierMenuButton}"
+                                Width="190"
+                                Margin="0, 0, 5, 0">
                             <TextBlock Text="Main Dish"
                                        FontSize="30" />
                         </Button>
-                        <Button DockPanel.Dock="Left"
-                                Padding="10,0,10,0"
-                                HorizontalAlignment="Center"
-                                Command="{Binding ShowCat}"
-                                CommandParameter="Side Dish">
+                        <Button Command="{Binding ShowCat}"
+                                CommandParameter="Side Dish"
+                                Background="#e9aa87"
+                                Style="{StaticResource cashierMenuButton}"
+                                Width="190"
+                                Margin="0, 0, 5, 0">
                             <TextBlock Text="Side Dish"
                                        FontSize="30" />
                         </Button>
-                        <Button DockPanel.Dock="Left"
-                                Padding="10,0,10,0"
-                                HorizontalAlignment="Center"
-                                Command="{Binding ShowCat}"
-                                CommandParameter="Drink">
+                        <Button Command="{Binding ShowCat}"
+                                CommandParameter="Drink"
+                                Background="#e9aa87"
+                                Style="{StaticResource cashierMenuButton}"
+                                Width="190"
+                                Margin="0, 0, 5, 0">
                             <TextBlock Text="Drinks"
                                        FontSize="30" />
                         </Button>
@@ -751,7 +766,7 @@
                                       VerticalAlignment="Center">
                             <fa:IconImage Icon="Lightbulb" />
                         </ToggleButton>
-                    </DockPanel>
+                    </StackPanel>
                 </Grid>
             </Grid>
         </Grid>

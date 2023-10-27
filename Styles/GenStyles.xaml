@@ -53,6 +53,7 @@
     
 
     <SolidColorBrush x:Key="lightblueTrans1">#99DDEEFF</SolidColorBrush>
+    <SolidColorBrush x:Key="lightblueTrans2">#99CFC6DF</SolidColorBrush>
     <SolidColorBrush x:Key="blueTrans1">#995AADFF</SolidColorBrush>
     <SolidColorBrush x:Key="darkgrayTrans1">#99545454</SolidColorBrush>
 
@@ -170,7 +171,47 @@
                                  Value="False">
                             <Setter Property="Background"
                                     TargetName="border"
-                                    Value="{StaticResource darkgrayTrans1}" />
+                                    Value="{StaticResource lightblueTrans2}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button"
+           x:Key="cashierMenuButton">
+        <!--Rounded Button with Background-->
+        <Setter Property="FontSize"
+                Value="24" />
+        <Setter Property="Focusable"
+                Value="False" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="10"
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="Transparent">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="{StaticResource blueTrans1}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="{StaticResource lightblueTrans2}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
